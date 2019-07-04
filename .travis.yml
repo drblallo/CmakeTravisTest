@@ -10,19 +10,18 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-7
-      - ninja-build 
 
 script:
     - export CC=gcc-7
     - export CXX=g++-7
     - mkdir build-asan
     - cd build-asan
-    - cmake .. -G Ninja -DCMAKE_CXX_FLAGS="-fsanitize=address -fno-omit-frame-pointer"
+    - cmake .. -DCMAKE_CXX_FLAGS="-fsanitize=address -fno-omit-frame-pointer"
     - cmake --build . -- -j2
     - ctest -j2
     - cd ..
     - mkdir build-tsan
-    - cmake .. -G Ninja -DCMAKE_CXX_FLAGS="fsanize=thread -O1"
+    - cmake .. -DCMAKE_CXX_FLAGS="fsanize=thread -O1"
     - cmake --build . -- -j2
     - ctest -j2
 
