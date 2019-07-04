@@ -1,0 +1,5 @@
+ADD_LIBRARY(utils src/ConsumerThread.cpp)
+TARGET_INCLUDE_DIRECTORIES(utils PRIVATE src PUBLIC include)
+TARGET_COMPILE_FEATURES(utils PUBLIC cxx_std_17)
+
+ADD_SUBDIRECTORY(test)

@@ -11,31 +11,16 @@ SET(gtest_disable_pthreads OFF CACHE INTERNAL "")
 SET(gtest_hide_internal_symbols OFF CACHE INTERNAL "")
 SET(gtest_force_shared_crt OFF CACHE INTERNAL "")
 
-if (CMAKE_BUILD_TYPE STREQUAL "Release")
-	SET(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")
-	SET(G3_SHARED_LIB OFF CACHE INTERNAL "")
-	message("Building static libs")
-else()
-	SET(BUILD_SHARED_LIBS ON CACHE INTERNAL "")
-	SET(G3_SHARED_LIB ON CACHE INTERNAL "")
-	message("Building shared libs")
-endif()
-
-
-include(compile_options.cmake)
-
 project(example)
+enable_testing()
+
 
 add_subdirectory(googletest)
-add_subdirectory(core)
 add_subdirectory(test)
+add_subdirectory(utils)
 
-message("COMPILING MAIN")
 ADD_EXECUTABLE(main main.cpp)
 TARGET_LINK_LIBRARIES(main PRIVATE utils pthread) 
 TARGET_COMPILE_FEATURES(main PUBLIC cxx_std_17)
 
-compile_options(main)
-
-message("END COMPILING MAIN")
-
+set_tests_properties(${noArgsTests}   PROPERTIES TIMEOUT 10)

@@ -1,19 +1,14 @@
-message("COMPILING TESTS")
-ADD_EXECUTABLE(runTest src/DefaultTest.cpp)
+include(GoogleTest)
 
-TARGET_LINK_LIBRARIES(runTest PRIVATE gtest gtest_main utils)
-TARGET_INCLUDE_DIRECTORIES(runTest PUBLIC include PRIVATE src)
-TARGET_COMPILE_FEATURES(runTest PUBLIC cxx_std_17)
+ADD_EXECUTABLE(defaultTest src/DefaultTest.cpp)
 
-add_subdirectory(core)
+TARGET_LINK_LIBRARIES(defaultTest PRIVATE gtest gtest_main utils)
+TARGET_INCLUDE_DIRECTORIES(defaultTest PUBLIC include PRIVATE src)
+TARGET_COMPILE_FEATURES(defaultTest PUBLIC cxx_std_17)
 
-compile_options(runTest)
+gtest_add_tests(TARGET      defaultTest
+                TEST_SUFFIX .noArgs
+                TEST_LIST   noArgsTests
+)
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug" AND NOT CULT_TSAN)
-	message("--enabling death test")
-	TARGET_COMPILE_DEFINITIONS(runTest PUBLIC CULT_DEATH_TEST)	
-elseif()
-	message("--death test disabled")
-endif()
 
-message("END COMPILING TEST")
