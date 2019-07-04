@@ -11,7 +11,7 @@ SET(gtest_disable_pthreads OFF CACHE INTERNAL "")
 SET(gtest_hide_internal_symbols OFF CACHE INTERNAL "")
 SET(gtest_force_shared_crt OFF CACHE INTERNAL "")
 
-project(example)
+project(example VERSION 1.0 LANGUAGES CXX)
 enable_testing()
 
 
@@ -20,7 +20,14 @@ add_subdirectory(test)
 add_subdirectory(utils)
 
 ADD_EXECUTABLE(main main.cpp)
-TARGET_LINK_LIBRARIES(main PRIVATE utils pthread) 
+ADD_EXECUTABLE(example::main ALIAS main)
+TARGET_LINK_LIBRARIES(main PRIVATE example::utils pthread) 
 TARGET_COMPILE_FEATURES(main PUBLIC cxx_std_17)
+
+INSTALL(TARGETS main
+	LIBRARY DESTINATION lib
+	ARCHIVE DESTINATION lib
+	RUNTIME DESTINATION bin
+	INCLUDES DESTINATION include)
 
 set_tests_properties(${noArgsTests}   PROPERTIES TIMEOUT 10)
