@@ -15,8 +15,8 @@ addons:
 
 
 script:
-    - export CC=clang-6
-    - export CXX=clang++-6
+    - export CC=clang-6.0
+    - export CXX=clang++-6.0
     - mkdir build-asan
     - cd build-asan
     - cmake .. -DCMAKE_CXX_FLAGS="-fsanitize=address -fno-omit-frame-pointer"
