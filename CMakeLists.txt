@@ -14,6 +14,7 @@ SET(gtest_force_shared_crt OFF CACHE INTERNAL "")
 project(example VERSION 1.0 LANGUAGES CXX)
 enable_testing()
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra")
 
 add_subdirectory(googletest)
 add_subdirectory(test)

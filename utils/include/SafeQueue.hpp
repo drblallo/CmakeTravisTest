@@ -39,7 +39,11 @@ namespace utils
 		/***
 		 * Move asigment operator is not thread safe
 		 */
-		SafeQueue &operator=(SafeQueue &&other) { queue = std::move(other.queue); }
+		SafeQueue &operator=(SafeQueue &&other)
+		{
+			queue = std::move(other.queue);
+			return *this;
+		}
 
 		~SafeQueue() = default;
 
