@@ -24,6 +24,7 @@ script:
     - ctest -j2
     - cd ..
     - mkdir build-tsan
+    - cd build-tsan
     - cmake .. -DCMAKE_CXX_FLAGS="fsanize=thread -O1"
     - cmake --build . -- -j2
     - ctest -j2

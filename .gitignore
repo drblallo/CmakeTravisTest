@@ -6,6 +6,7 @@
 .gdb_history
 compile_commands.json
 tags
+build
 
 # User-specific stuff
 .idea/**/workspace.xml
