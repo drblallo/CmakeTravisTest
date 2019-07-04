@@ -3,7 +3,7 @@ let BUILD_DIRECTORY = "build"
 let CPPCOMPILER = "clang++" 
 let CCOMPILER = "clang"
 let BUILD_TYPE = "Debug"
-let EXTRA_CONFIG = "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+let EXTRA_CONFIG = ""
 let GENERATOR = "Ninja"
 let TARGET = "utils"
 
@@ -31,7 +31,7 @@ function! s:setType(val, cmakeBuildBir, cCompiler, cppCompiler, buildType, extra
 endfunction
 
 function! s:getBuildCommand()
-	let s:command =  "!cmake -DCMAKE_BUILD_TYPE=" . g:BUILD_TYPE . " -DCMAKE_C_COMPILER=" . g:CCOMPILER . " -DCMAKE_CXX_COMPILER=" . g:CPPCOMPILER . " -G " . g:GENERATOR . " " . g:EXTRA_CONFIG . " --build ../"
+	let s:command =  "!cmake -DCMAKE_BUILD_TYPE=" . g:BUILD_TYPE .  " -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_INSTALL_PREFIX=./install" . " -DCMAKE_C_COMPILER=" . g:CCOMPILER . " -DCMAKE_CXX_COMPILER=" . g:CPPCOMPILER . " -G " . g:GENERATOR . " " . g:EXTRA_CONFIG . " --build ../"
 	return s:command
 endfunction
 
@@ -91,8 +91,9 @@ function! s:goToTest(name)
 	execute "vimgrep " . a:name . " ../" . g:TARGET . "/test/src/*.cpp"	. " **/" . g:TARGET . "/test/src/*.cpp"
 endfunction
 
-command! -nargs=0 CMDEBUG call s:setType(0, "build", g:CCLANG, g:CPPCLANG, "Debug", "", g:NINJA)
-command! -nargs=0 CMRELEASE call s:setType(1, "release", g:CCLANG, g:CPPCLANG, "Release", "-DCMAKE_CXX_FLAGS='-fsanitize=address -fno-omit-frame-pointer'", g:NINJA)
+command! -nargs=0 CMDEBUG call s:setType(0, "build", "clang", "clang++", "Debug", "", "Ninja")
+command! -nargs=0 CMRELEASE call s:setType(1, "release", "clang", "clang++", "Release", "", "Ninja")
+command! -nargs=0 CMASAN call s:setType(2, "release", "clang", "clang++", "Debug", "-DCMAKE_CXX_FLAGS=-fsanitize=address -DCMAKE_CXX_FLAGS=-fno-omit-frame-pointer", "Ninja")
 command! -nargs=0 CMTSAN call s:setType(3, "build", g:CCLANG, g:CPPCLANG, "Debug", "-DCMAKE_CXX_FLAGS='-fsanitize=thread -O1'", g:NINJA)
 
 command! -nargs=0 REBUILD call s:Rebuild()

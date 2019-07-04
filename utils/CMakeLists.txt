@@ -30,5 +30,6 @@ write_basic_package_version_file("utilsConfigVersion.cmake"
 INSTALL(FILES utilsConfig.cmake ${CMAKE_CURRENT_BINARY_DIR}/utilsConfigVersion.cmake
 	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${CMAKE_PROJECT_NAME})
 
+install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 ADD_SUBDIRECTORY(test)

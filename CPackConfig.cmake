@@ -1,3 +1,2 @@
-include("cmake-build-debug/CPackConfig.cmake")
-set(CPACK_INSTALL_CMAKE_PROJECTS "debug;Foo;ALL;/")
-set(CPACK_INSTALL_CMAKE_PROJECTS "release;Foo;ALL;/")
+include("release/CPackConfig.cmake")
+set(CPACK_INSTALL_CMAKE_PROJECTS "build;example;ALL;/" "release;example;ALL;/")

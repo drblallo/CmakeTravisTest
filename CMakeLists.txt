@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.9)
+include("CPack")
 
 SET(BUILD_GMOCK ON CACHE INTERNAL "")
 SET(BUILD_GTEST ON CACHE INTERNAL "")
@@ -13,6 +14,8 @@ SET(gtest_force_shared_crt OFF CACHE INTERNAL "")
 
 project(example VERSION 1.0 LANGUAGES CXX)
 enable_testing()
+include("CTest")
+set(CMAKE_DEBUG_POSTFIX "-d")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra")
 
