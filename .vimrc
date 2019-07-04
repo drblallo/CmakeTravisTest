@@ -7,6 +7,8 @@ let EXTRA_CONFIG = "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
 let GENERATOR = "Ninja"
 let TARGET = "utils"
 
+let g:ctrlp_custom_ignore = '\v[\/](build|gli|glbinding|googletest|glfw|glm)|(\.(swp|ico|git|svn|lock))$'
+
 function! s:updateCmake()
 
 	call AQAppend(":lcd " . g:BUILD_DIRECTORY)
