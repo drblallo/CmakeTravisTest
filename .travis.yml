@@ -8,13 +8,13 @@ addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
-      - llvm-toolchain-trusty-7.0
+      - llvm-toolchain-trusty-6.0
     packages:
-      - clang-7.0
+      - clang-6.0
 
 script:
-    - export CC=clang-7.0
-    - export CXX=clang++-7.0
+    - export CC=clang-6.0
+    - export CXX=clang++-6.0
     - mkdir build-asan
     - cd build-asan
     - cmake .. -DCMAKE_CXX_FLAGS="-fsanitize=address -fno-omit-frame-pointer"
