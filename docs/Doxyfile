@@ -873,7 +873,7 @@ RECURSIVE              = YES
 # Note that relative paths are relative to the directory from which doxygen is
 # run.
 
-EXCLUDE                = @CMAKE_CURRENT_SOURCE_DIR@/googletest @CMAKE_CURRENT_BINARY_DIR@/build @CMAKE_CURRENT_BINARY_DIR@/release @CMAKE_CURRENT_BINARY_DIR@
+EXCLUDE                = @CMAKE_CURRENT_SOURCE_DIR@/googletest @CMAKE_CURRENT_SOURCE_DIR@/build @CMAKE_CURRENT_SOURCE_DIR@/release @CMAKE_CURRENT_BINARY_DIR@
 
 
 
