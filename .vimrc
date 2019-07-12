@@ -7,7 +7,7 @@ let EXTRA_CONFIG = ""
 let GENERATOR = "Ninja"
 let TARGET = "utils"
 
-let g:ctrlp_custom_ignore = '\v[\/](build|gli|glbinding|googletest|glfw|glm)|(\.(swp|ico|git|svn|lock))$'
+let g:ctrlp_custom_ignore = '\v[\/](release|build|gli|glbinding|googletest|glfw|glm)|(\.(swp|ico|git|svn|lock))$'
 
 function! s:updateCmake()
 

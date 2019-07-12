@@ -19,6 +19,9 @@ namespace utils
 		blockingStop();
 	}
 
+	/**
+	 * Starts the thread.
+	 */
 	void ConsumerThread::start(
 			std::function<void()> onStart, std::function<void()> onStop)
 	{

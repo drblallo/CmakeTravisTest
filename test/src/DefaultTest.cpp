@@ -2,6 +2,9 @@
 
 #include "SoutSink.hpp"
 
+/** This is a example test
+ *
+ */
 class DefaultTest: public testing::Test
 {
 	public:
