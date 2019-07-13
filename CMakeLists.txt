@@ -22,7 +22,7 @@ add_subdirectory(googletest)
 project(example VERSION 1.0 LANGUAGES CXX)
 enable_testing()
 include("CPack")
-include("CTest")
+include(CTest)
 set(CMAKE_DEBUG_POSTFIX "-d")
 
 ##############################
@@ -62,43 +62,46 @@ endif (DOXYGEN_FOUND)
 ##############################
 ###        COVERAGE        ###
 ##############################
-if (${CMAKE_CXX_FLAGS} MATCHES ".*-fprofile-arcs*.*" AND ${CMAKE_CXX_FLAGS} MATCHES ".*-ftest-coverage.*")
+if (${CMAKE_CXX_FLAGS} MATCHES ".*--coverage.*")
+	find_program(LCOV NAMES lcov)
+	find_program(GENHTML NAMES genhtml)
+
 	add_custom_command(
 		OUTPUT base.info
-		COMMAND lcov --capture --initial --directory . --output-file ./base.info
+		COMMAND ${LCOV} --capture --initial --directory . --output-file ./base.info
 		VERBATIM
 		)
 
 	add_custom_command(
 		OUTPUT filtered.info 
-		COMMAND lcov --remove ./total.info "/usr/*" "*/googletest/*" "*/cmake-build-coverage/*" --output-file ./filtered.info
+		COMMAND ${LCOV} --remove ./total.info "/usr/*" "*/googletest/*" "*/cmake-build-coverage/*" --output-file ./filtered.info
 		DEPENDS total.info
 		VERBATIM)
 
 	add_custom_command(
 		OUTPUT total.info 
-		COMMAND lcov --add-tracefile ./base.info --add-tracefile ./test.info --output-file ./total.info
+		COMMAND ${LCOV} --add-tracefile ./base.info --add-tracefile ./test.info --output-file ./total.info
 		DEPENDS test.info base.info
 		VERBATIM)
 
 	add_custom_command(
 		OUTPUT test.info 
-		COMMAND lcov --capture --directory . --output-file ./test.info
+		COMMAND ${LCOV} --capture --directory . --output-file ./test.info
 		VERBATIM)
 
-	add_custom_target(coverage
-		COMMAND genhtml ./filtered.info --output-directory ./Coverage
+	add_custom_target(genCoverage
+		COMMAND ${GENHTML} ./filtered.info --output-directory ./Coverage
 		DEPENDS filtered.info
 		BYPRODUCTS ./Coverage
 		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 		COMMENT "Generate coverage"
 		VERBATIM )
 
-	add_custom_target(cleanCoverage COMMAND rm test.info filtered.info base.info total.info)
-	add_dependencies(coverage cleanCoverage)
+	add_custom_target(coverage COMMAND rm test.info filtered.info base.info total.info)
+	add_dependencies(coverage genCoverage)
 elseif(TRUE)
 	add_custom_target(coverage
-		COMMAND echo could not calculate coverage run cmake with -fprofile-arcs -test-coverage
+		COMMAND echo could not calculate coverage run cmake with -DCMAKE_CXX_FLAGS=--coverage
 		WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 		COMMENT "Coverage not aviable"
 		VERBATIM)
