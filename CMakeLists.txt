@@ -74,7 +74,7 @@ if (${CMAKE_CXX_FLAGS} MATCHES ".*--coverage.*")
 
 	add_custom_command(
 		OUTPUT filtered.info 
-		COMMAND ${LCOV} --remove ./total.info "/usr/*" "*/googletest/*" "*/cmake-build-coverage/*" --output-file ./filtered.info
+		COMMAND ${LCOV} --remove ./total.info "/usr/*" "*/googletest/*" "*/build/*" --output-file ./filtered.info
 		DEPENDS total.info
 		VERBATIM)
 
