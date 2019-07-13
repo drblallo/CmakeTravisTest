@@ -55,6 +55,7 @@ endfunction
 
 function! s:silentBuild(target)
 	let s:build = "!cmake --build " . g:BUILD_DIRECTORY . " --target " . a:target . " -- -j 4"
+	call AQAppendOpen(0)
 	return AQAppend(s:build)
 endfunction
 
@@ -82,7 +83,6 @@ function! s:RunD(target, executible, args)
 	let s:exec = "./" . g:BUILD_DIRECTORY . "/" . a:executible . " " . a:args
 
 	let l:t = s:silentBuild(a:target)
-	call AQAppendOpen(0)
 	call AQAppendCond("Termdebug -r --args " . s:exec, 1, l:t)
 
 endfunction
@@ -95,10 +95,22 @@ function! s:setTarget(name)
 	let g:TARGE = a:name
 endfunction
 
+function! s:genDoc()
+	let l:ret = s:silentBuild("doc")
+	call AQAppendCond('QTBSearch ./build/doc_doxygen/html/index.html', 1, l:ret)
+endfunction
+
+function! s:genCoverage()
+	let l:ret = s:silentBuild("all")
+	let l:ret = s:silentBuild("test")
+	let l:ret = s:silentBuild("coverage")
+	call AQAppendCond('QTBSearch ./build/Coverage/index.html', 1, l:ret)
+endfunction
+
 command! -nargs=0 CMDEBUG call s:setType(0, "build", "gcc", "g++", "Debug", "-DCMAKE_CXX_FLAGS=--coverage", "Ninja")
 command! -nargs=0 CMRELEASE call s:setType(1, "release", "clang", "clang++", "Release", "", "Ninja")
 command! -nargs=0 CMASAN call s:setType(2, "release", "clang", "clang++", "Debug", "-DCMAKE_CXX_FLAGS=-fsanitize=address -DCMAKE_CXX_FLAGS=-fno-omit-frame-pointer", "Ninja")
-command! -nargs=0 CMTSAN call s:setType(3, "build", g:CCLANG, g:CPPCLANG, "Debug", "-DCMAKE_CXX_FLAGS='-fsanitize=thread -O1'", g:NINJA)
+command! -nargs=0 CMTSAN call s:setType(3, "build", g:CCLANG, g:CPPCLANG, "Debug", "-DCMAKE_CXX_FLAGS='-fsanitize=thread -O1'", "Ninja")
 
 command! -nargs=0 REBUILD call s:Rebuild()
 command! -nargs=0 TALL call s:RunTest(g:TARGET . "Test", g:TARGET . "/test/" . g:TARGET . "Test", "")
@@ -111,6 +123,8 @@ command! -nargs=0 DTONE call s:RunD(g:TARGET . "Test", g:TARGET . "/test/" . g:T
 command! -nargs=0 DRUN call s:RunD("main", "main", "")
 command! -nargs=0 GOTOTEST call s:goToTest(expand("<cword>"))
 command! -nargs=1 SETTARGET call s:setTarget(<f-args>)
+command! -nargs=0 DOC call s:genDoc()
+command! -nargs=0 COVERAGE call s:genCoverage()
 
 nnoremap <leader><leader>gt :vsp<cr>:GOTOTEST<cr>
 nnoremap <leader><leader>b :REBUILD<cr>
